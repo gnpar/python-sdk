@@ -28,7 +28,7 @@ OAUTH_URL = '/oauth/token'
 SDK_VERSION = 'MELI-PYTHON-SDK-1.0.1'
 API_ROOT_URL = 'https://api.mercadolibre.com'
 
-SSL_VERSION = PROTOCOL_TLSv1
+SSL_VERSION = 'PROTOCOL_TLSv1'
 
 class Meli(object):
     def __init__(self, client_id, client_secret, access_token=None, refresh_token=None, auth_url=AUTH_URL_MLA):
