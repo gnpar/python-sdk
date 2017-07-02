@@ -1,7 +1,6 @@
  #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ConfigParser import SafeConfigParser
 from ssl_helper import SSLAdapter
 from urllib import urlencode
 import json
@@ -10,29 +9,46 @@ import re
 import requests
 import ssl
 
+AUTH_URL_MLA = 'https://auth.mercadolibre.com.ar' # Argentina 
+AUTH_URL_MLB = 'https://auth.mercadolivre.com.br' # Brasil
+AUTH_URL_MCO = 'https://auth.mercadolibre.com.co' # Colombia
+AUTH_URL_MCR = 'https://auth.mercadolibre.com.cr' # Costa Rica
+AUTH_URL_MEC = 'https://auth.mercadolibre.com.ec' # Ecuador
+AUTH_URL_MLC = 'https://auth.mercadolibre.cl    ' # Chile
+AUTH_URL_MLM = 'https://auth.mercadolibre.com.mx' # Mexico
+AUTH_URL_MLU = 'https://auth.mercadolibre.com.uy' # Uruguay
+AUTH_URL_MLV = 'https://auth.mercadolibre.com.ve' # Venezuela
+AUTH_URL_MPA = 'https://auth.mercadolibre.com.pa' # Panama
+AUTH_URL_MPE = 'https://auth.mercadolibre.com.pe' # Peru
+AUTH_URL_MPT = 'https://auth.mercadolibre.com.pt' # Prtugal
+AUTH_URL_MRD = 'https://auth.mercadolibre.com.do' # Dominicana
+
+OAUTH_URL = '/oauth/token'
+
+SDK_VERSION = 'MELI-PYTHON-SDK-1.0.1'
+API_ROOT_URL = 'https://api.mercadolibre.com'
+
+SSL_VERSION = PROTOCOL_TLSv1
+
 class Meli(object):
-    def __init__(self, client_id, client_secret, access_token=None, refresh_token=None):
+    def __init__(self, client_id, client_secret, access_token=None, refresh_token=None, auth_url=AUTH_URL_MLA):
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = access_token
         self.refresh_token = refresh_token
-        self.expires_in = None
-
-
-        parser = SafeConfigParser()
-        parser.read(os.path.dirname(os.path.abspath(__file__))+'/config.ini')
-
+        self.expires_in = None 
+        self.AUTH_URL = auth_url
+  
         self._requests = requests.Session()
         try:
-            self.SSL_VERSION = parser.get('config', 'ssl_version')
+            self.SSL_VERSION = SSL_VERSION
             self._requests.mount('https://', SSLAdapter(ssl_version=getattr(ssl, self.SSL_VERSION)))
         except:
             self._requests = requests
 
-        self.API_ROOT_URL = parser.get('config', 'api_root_url')
-        self.SDK_VERSION = parser.get('config', 'sdk_version')
-        self.AUTH_URL = parser.get('config', 'auth_url')
-        self.OAUTH_URL = parser.get('config', 'oauth_url')
+        self.API_ROOT_URL = API_ROOT_URL
+        self.SDK_VERSION = SDK_VERSION
+        self.OAUTH_URL = OAUTH_URL
 
     #AUTH METHODS
     def auth_url(self, redirect_URI, state=None):
