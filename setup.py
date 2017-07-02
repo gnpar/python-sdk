@@ -5,5 +5,5 @@ from setuptools import setup
 setup(
     name='meli-sdk',
     version='0.1',
-    scripts=['meli', 'ssl_helper']
+    scripts=['meli/meli.py', 'meli/ssl_helper.py']
 )
